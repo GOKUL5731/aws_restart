@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M. Gokul | AI / ML Engineer &amp; Software Developer</title>
+  <meta name="description" content="Portfolio of M. Gokul, an AI / ML Engineer and Software Developer building intelligent systems across machine learning, computer vision, automation and full-stack engineering." />
+  <link rel="canonical" href="https://gokul-m-portfolio.web.app/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050505'/%3E%3Cpath d='M18 16h28v8H26v8h16v8H26v8h20v8H18z' fill='%2322d3ee'/%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="M. Gokul — AI & ML Engineer" />
+  <meta property="og:description" content="B.Tech CSE (AI & ML) student building intelligent systems with Python, Computer Vision, NLP, and Full-Stack technologies." />
+  <meta property="og:image" content="https://gokul-m-portfolio.web.app/assets/avatar.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="M. Gokul — AI & ML Engineer" />
+  <meta name="twitter:image" content="https://gokul-m-portfolio.web.app/assets/avatar.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- CUSTOM CURSOR -->
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true">
+    <div class="ring-corner tl"></div>
+    <div class="ring-corner tr"></div>
+    <div class="ring-corner bl"></div>
+    <div class="ring-corner br"></div>
+  </div>
+  <div id="cursor-label" aria-hidden="true"></div>
+
+  <!-- SCROLL PROGRESS -->
+  <div id="scroll-progress" aria-hidden="true">
+    <div id="scroll-progress-bar"></div>
+  </div>
+
+  <!-- SECTION PROGRESS -->
+  <nav id="section-nav" aria-label="Section progress">
+    <ul>
+      <li><a href="#home" data-section="home" data-label="Home" class="snav-dot active" aria-label="Home"></a></li>
+      <li><a href="#about" data-section="about" data-label="Profile" class="snav-dot" aria-label="Profile"></a></li>
+      <li><a href="#skills" data-section="skills" data-label="Stack" class="snav-dot" aria-label="Stack"></a></li>
+      <li><a href="#projects" data-section="projects" data-label="Work" class="snav-dot" aria-label="Work"></a></li>
+      <li><a href="#experience" data-section="experience" data-label="Journey" class="snav-dot" aria-label="Journey"></a></li>
+      <li><a href="#contact" data-section="contact" data-label="Connect" class="snav-dot" aria-label="Connect"></a></li>
+    </ul>
+  </nav>
+
+  <!-- COMMAND PALETTE -->
+  <div id="cmd-overlay" role="dialog" aria-modal="true" aria-label="Command palette" hidden>
+    <div id="cmd-palette">
+      <div id="cmd-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="cmd-input" type="text" placeholder="Search portfolio..." autocomplete="off" aria-label="Search command" />
+        <kbd>ESC</kbd>
+      </div>
+      <ul id="cmd-results" role="listbox" aria-label="Commands"></ul>
+    </div>
+  </div>
+
+  <!-- PROJECT MODAL -->
+  <div id="proj-modal" role="dialog" aria-modal="true" aria-label="Project detail" hidden>
+    <div id="proj-modal-inner">
+      <button id="proj-modal-close" aria-label="Close project detail">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div id="proj-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- TOP NAV -->
+  <nav class="topnav" id="topnav" aria-label="Main navigation">
+    <div class="topnav-inner">
+      <a href="#home" class="topnav-logo" aria-label="Home">
+        <span class="logo-bracket">&lt;</span>G<span class="logo-bracket">/&gt;</span>
+      </a>
+      <ul class="topnav-links" id="topnavLinks" role="list">
+        <li><a href="#about" class="tnl" data-index="01">Profile</a></li>
+        <li><a href="#skills" class="tnl" data-index="02">Stack</a></li>
+        <li><a href="#projects" class="tnl" data-index="03">Work</a></li>
+        <li><a href="#experience" class="tnl" data-index="04">Journey</a></li>
+        <li><a href="#contact" class="tnl" data-index="05">Connect</a></li>
+      </ul>
+      <div class="topnav-right">
+        <button id="cmd-trigger" class="cmd-trigger-btn" aria-label="Open command palette">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <kbd>⌘K</kbd>
+        </button>
+        <a href="assets/resume.pdf" download class="topnav-resume" id="nav-resume-btn">
+          Resume <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </a>
+        <button class="topnav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="topnav-mobile" id="mobileMenu" hidden>
+      <a href="#about">01 — Profile</a>
+      <a href="#skills">02 — Stack</a>
+      <a href="#projects">03 — Work</a>
+      <a href="#experience">04 — Journey</a>
+      <a href="#contact">05 — Connect</a>
+      <a href="assets/resume.pdf" download>↓ Resume</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section id="home" class="hero-section" aria-label="Introduction">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-status" aria-label="Status">
+          <span class="status-pulse" aria-hidden="true"></span>
+          <span class="status-text">Available for Internships &amp; Opportunities</span>
+        </div>
+        <h1 class="hero-name">
+          <span class="hn-first">M.</span>
+          <span class="hn-last">Gokul</span>
+        </h1>
+        <div class="hero-roles" aria-label="Roles">
+          <span class="role-line active">AI / ML Engineer</span>
+          <span class="role-line">Software Developer</span>
+          <span class="role-line">Computer Vision</span>
+          <span class="role-line">Full-Stack Builder</span>
+        </div>
+        <p class="hero-bio">
+          B.Tech CSE (AI&nbsp;&amp;&nbsp;ML) student at Periyar Maniammai Institute of Science&nbsp;&amp;&nbsp;Technology, building intelligent systems that solve real-world problems — from C-compiler analytics engines to computer vision pipelines.
+        </p>
+        <div class="hero-ctas">
+          <a href="#projects" class="cta-primary magnetic" id="hero-explore-btn" data-cursor="EXPLORE WORK">
+            Explore Work
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="https://github.com/GOKUL5731" target="_blank" rel="noopener noreferrer" class="cta-secondary magnetic" id="hero-gh-btn" data-cursor="OPEN GITHUB">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <div class="hero-metrics" aria-label="Quick stats">
+          <div class="metric">
+            <span class="metric-num" id="repoCount">4</span>
+            <span class="metric-lbl">Public Repos</span>
+          </div>
+          <div class="metric-divider" aria-hidden="true"></div>
+          <div class="metric">
+            <span class="metric-num">2</span>
+            <span class="metric-lbl">Internships</span>
+          </div>
+          <div class="metric-divider" aria-hidden="true"></div>
+          <div class="metric">
+            <span class="metric-num">3</span>
+            <span class="metric-lbl">Awards</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right" aria-label="Profile photo">
+        <div class="avatar-system">
+          <div class="avatar-frame">
+            <img src="assets/avatar.jpg" alt="M. Gokul" width="260" height="260" loading="eager" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-cue" aria-hidden="true">
+      <div class="scroll-cue-line"></div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ABOUT / PROFILE ═══════════════ -->
+  <section id="about" class="section" aria-label="Profile">
+    <div class="section-bg-accent" aria-hidden="true"></div>
+    <div class="section-inner">
+      <div class="section-label-row reveal">
+        <span class="section-num">01</span>
+        <span class="section-slash">/</span>
+        <span class="section-tag">Profile</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="about-layout">
+        <div class="about-headline reveal">
+          <h2 class="about-h2">Who I Am</h2>
+          <p class="about-subline">Engineering at the intersection of AI and software.</p>
+        </div>
+        <div class="about-identity reveal">
+          <div class="identity-tabs">
+            <button class="id-tab active" data-tab="story">Story</button>
+            <button class="id-tab" data-tab="education">Education</button>
+            <button class="id-tab" data-tab="interests">Interests</button>
+          </div>
+          <div class="id-panel active" id="tab-story">
+            <p>I'm a final-year B.Tech Computer Science student specializing in <strong>Artificial Intelligence & Machine Learning</strong> at Periyar Maniammai Institute of Science & Technology, Thanjavur (graduating 2027).</p>
+            <p>My work sits at the intersection of AI and software engineering. I've built computer vision systems that automate real-world workflows, NLP-powered voice assistants, and a custom analytics compiler combining a C compiler pipeline with Python ML and a full GUI IDE.</p>
+            <p>Beyond academics, I completed two web development internships, earned certifications in Industrial Automation and Robotics & IoT, and was recognized as <strong>Best Student</strong> at my institute's Annual Day. I received the <strong>Ascent Award</strong> at the Design Spark Challenge.</p>
+          </div>
+          <div class="id-panel" id="tab-education" hidden>
+            <div class="edu-entry">
+              <div class="edu-year">2023 — 2027</div>
+              <div class="edu-detail">
+                <h3>B.Tech — Computer Science Engineering (AI & ML)</h3>
+                <p>Periyar Maniammai Institute of Science & Technology, Thanjavur</p>
+                <span class="edu-loc">Tamil Nadu, India</span>
+              </div>
+            </div>
+            <div class="edu-entry">
+              <div class="edu-year">2023</div>
+              <div class="edu-detail">
+                <h3>Higher Secondary (12th) — 71.8%</h3>
+                <p>Boiler Plant Boys Hr. Sec. School, Kailasapuram</p>
+                <span class="edu-loc">Trichy, Tamil Nadu</span>
+              </div>
+            </div>
+            <div class="edu-location">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Currently in Tiruchirappalli, Tamil Nadu, India
+            </div>
+          </div>
+          <div class="id-panel" id="tab-interests" hidden>
+            <div class="interests-grid">
+              <div class="interest-item"><span>👁️</span> Computer Vision</div>
+              <div class="interest-item"><span>🤖</span> Generative AI</div>
+              <div class="interest-item"><span>💬</span> Large Language Models</div>
+              <div class="interest-item"><span>🔌</span> IoT & Digital Twins</div>
+              <div class="interest-item"><span>🌐</span> Full-Stack Systems</div>
+              <div class="interest-item"><span>🦾</span> Robotics</div>
+              <div class="interest-item"><span>⚙️</span> Compiler Design</div>
+              <div class="interest-item"><span>📊</span> Anomaly Detection</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-stats reveal">
+          <div class="astat">
+            <span class="astat-n">2+</span>
+            <span class="astat-l">Years Building</span>
+          </div>
+          <div class="astat">
+            <span class="astat-n">4</span>
+            <span class="astat-l">Public Repositories</span>
+          </div>
+          <div class="astat">
+            <span class="astat-n">2</span>
+            <span class="astat-l">Internships</span>
+          </div>
+          <div class="astat">
+            <span class="astat-n">3</span>
+            <span class="astat-l">Awards</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SKILLS / STACK ═══════════════ -->
+  <section id="skills" class="section section-dark" aria-label="Technical Stack">
+    <div class="section-inner">
+      <div class="section-label-row reveal">
+        <span class="section-num">02</span>
+        <span class="section-slash">/</span>
+        <span class="section-tag">Stack</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="skills-header reveal">
+        <h2 class="skills-h2">Technical Landscape</h2>
+        <p class="skills-sub">Hover a category to explore. Click a technology to filter projects.</p>
+      </div>
+      <div class="skills-universe reveal">
+        <div class="skills-categories">
+          <div class="skill-cat" data-cat="ai">
+            <div class="skill-cat-header">
+              <span class="scat-icon">🧠</span>
+              <h3>AI / ML</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="stag" data-filter="ai">Machine Learning</span>
+              <span class="stag" data-filter="ai">Deep Learning</span>
+              <span class="stag" data-filter="ai">TensorFlow</span>
+              <span class="stag" data-filter="ai">Computer Vision</span>
+              <span class="stag" data-filter="ai">OpenCV</span>
+              <span class="stag" data-filter="ai">NLP</span>
+              <span class="stag" data-filter="ai">Face Recognition</span>
+              <span class="stag" data-filter="ai">Anomaly Detection</span>
+            </div>
+          </div>
+          <div class="skill-cat" data-cat="lang">
+            <div class="skill-cat-header">
+              <span class="scat-icon">💻</span>
+              <h3>Languages</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="stag" data-filter="lang">Python</span>
+              <span class="stag" data-filter="lang">C</span>
+              <span class="stag" data-filter="lang">C++</span>
+              <span class="stag" data-filter="lang">JavaScript</span>
+              <span class="stag" data-filter="lang">TypeScript</span>
+              <span class="stag" data-filter="lang">PHP</span>
+              <span class="stag" data-filter="lang">SQL</span>
+              <span class="stag" data-filter="lang">Dart</span>
+            </div>
+          </div>
+          <div class="skill-cat" data-cat="web">
+            <div class="skill-cat-header">
+              <span class="scat-icon">🌐</span>
+              <h3>Web & Backend</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="stag" data-filter="web">Django</span>
+              <span class="stag" data-filter="web">PHP Backend</span>
+              <span class="stag" data-filter="web">REST APIs</span>
+              <span class="stag" data-filter="web">HTML5 / CSS3</span>
+              <span class="stag" data-filter="web">Bootstrap</span>
+            </div>
+          </div>
+          <div class="skill-cat" data-cat="data">
+            <div class="skill-cat-header">
+              <span class="scat-icon">🗄️</span>
+              <h3>Data & Databases</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="stag" data-filter="data">MySQL</span>
+              <span class="stag" data-filter="data">PostgreSQL</span>
+              <span class="stag" data-filter="data">SQLite</span>
+              <span class="stag" data-filter="data">CSV / Files</span>
+            </div>
+          </div>
+          <div class="skill-cat" data-cat="tools">
+            <div class="skill-cat-header">
+              <span class="scat-icon">🛠️</span>
+              <h3>Tools & Cloud</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="stag" data-filter="tools">Git / GitHub</span>
+              <span class="stag" data-filter="tools">Docker</span>
+              <span class="stag" data-filter="tools">Google Cloud</span>
+              <span class="stag" data-filter="tools">VS Code</span>
+              <span class="stag" data-filter="tools">Anaconda</span>
+            </div>
+          </div>
+          <div class="skill-cat" data-cat="iot">
+            <div class="skill-cat-header">
+              <span class="scat-icon">🔌</span>
+              <h3>IoT & Systems</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="stag" data-filter="iot">IoT</span>
+              <span class="stag" data-filter="iot">Robotics</span>
+              <span class="stag" data-filter="iot">Industrial Automation</span>
+              <span class="stag" data-filter="iot">Rexroth Bosch</span>
+              <span class="stag" data-filter="iot">Flutter / Dart</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PROJECTS / WORK ═══════════════ -->
+  <section id="projects" class="section" aria-label="Projects">
+    <div class="section-inner">
+      <div class="section-label-row reveal">
+        <span class="section-num">03</span>
+        <span class="section-slash">/</span>
+        <span class="section-tag">Work</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="projects-header reveal">
+        <h2 class="projects-h2">What I Build</h2>
+        <p class="projects-sub">Selected projects from my GitHub and academic work — ranked by technical depth and real-world impact.</p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="proj-filters reveal" role="group" aria-label="Filter projects by category">
+        <button class="pf-btn active" data-pf="all">All</button>
+        <button class="pf-btn" data-pf="ai">AI / ML</button>
+        <button class="pf-btn" data-pf="vision">Vision</button>
+        <button class="pf-btn" data-pf="fullstack">Full Stack</button>
+        <button class="pf-btn" data-pf="systems">Systems</button>
+      </div>
+
+      <!-- Featured Project -->
+      <div class="featured-proj reveal" data-pcat="ai systems" data-modal="analyticsql">
+        <div class="fp-left">
+          <div class="fp-badges">
+            <span class="fp-badge fp-badge-star">★ Featured</span>
+            <span class="fp-badge">AI / Compiler</span>
+          </div>
+          <h3 class="fp-title">AnalyticsQL — Intelligent Analytics IDE</h3>
+          <p class="fp-desc">A complete analytics environment combining a <strong>pure-C compiler pipeline</strong> (Lexer → Parser → AST → Semantic Analyzer → SQL Generator → Optimizer) with a <strong>PyQt6 desktop IDE</strong>, ML engine, and voice input. Executes a custom query language against SQLite, with ML-powered forecasting and anomaly detection built in.</p>
+          <ul class="fp-highlights">
+            <li>C compiler: Lexer, Parser, AST, SQL codegen pipeline</li>
+            <li>ML engine: time-series forecasting & anomaly detection</li>
+            <li>Voice input via Vosk (offline speech recognition)</li>
+            <li>Natural language query via AI assistant panel</li>
+            <li>KPI dashboard, AST viewer, charts, PDF/Excel export</li>
+          </ul>
+          <div class="fp-stack">
+            <span class="ftag">Python</span><span class="ftag">C</span><span class="ftag">PyQt6</span><span class="ftag">SQLite</span><span class="ftag">ML</span><span class="ftag">NLP</span><span class="ftag">Vosk</span>
+          </div>
+          <div class="fp-actions">
+            <a href="https://github.com/GOKUL5731/Analyticsql" target="_blank" rel="noopener noreferrer" class="fp-gh-btn" data-cursor="OPEN GITHUB">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              View on GitHub
+            </a>
+            <button class="fp-case-btn" data-modal="analyticsql" data-cursor="VIEW PROJECT">
+              Case Study →
+            </button>
+          </div>
+        </div>
+        <div class="fp-right" aria-hidden="true">
+          <div class="arch-visual">
+            <div class="av-node av-top">Natural Language / Voice Query</div>
+            <div class="av-connector"><div class="av-line"></div></div>
+            <div class="av-node av-accent">C Compiler Pipeline<br/><small>Lexer → Parser → AST → SQL</small></div>
+            <div class="av-connector"><div class="av-line"></div></div>
+            <div class="av-node">Python Orchestrator</div>
+            <div class="av-row">
+              <div class="av-branch">
+                <div class="av-connector"><div class="av-line"></div></div>
+                <div class="av-node av-accent">ML Engine<br/><small>Forecast · Anomaly</small></div>
+              </div>
+              <div class="av-branch">
+                <div class="av-connector"><div class="av-line"></div></div>
+                <div class="av-node">PyQt6 IDE</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="proj-grid" id="projGrid">
+
+        <article class="proj-card reveal" data-pcat="vision ai" data-modal="face-recognition">
+          <div class="pc-top">
+            <div class="pc-badges">
+              <span class="pc-badge pc-badge-vision">Computer Vision</span>
+            </div>
+            <a href="https://github.com/GOKUL5731" target="_blank" rel="noopener noreferrer" class="pc-gh-link" aria-label="GitHub" data-cursor="OPEN GITHUB">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <h3 class="pc-title">AI Face Recognition Attendance</h3>
+          <p class="pc-desc">Automated attendance tracking using face detection and recognition. Records stored to CSV, with admin dashboard for monitoring, filtering, and report generation.</p>
+          <div class="pc-stack">
+            <span>Python</span><span>OpenCV</span><span>Computer Vision</span><span>CSV</span>
+          </div>
+          <div class="pc-footer">
+            <button class="pc-detail-btn" data-modal="face-recognition">View Details →</button>
+          </div>
+        </article>
+
+        <article class="proj-card reveal" data-pcat="ai" data-modal="ai-assistant">
+          <div class="pc-top">
+            <div class="pc-badges">
+              <span class="pc-badge pc-badge-nlp">NLP</span>
+            </div>
+            <a href="https://github.com/GOKUL5731" target="_blank" rel="noopener noreferrer" class="pc-gh-link" aria-label="GitHub" data-cursor="OPEN GITHUB">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <h3 class="pc-title">AI Virtual Assistant</h3>
+          <p class="pc-desc">Voice-controlled assistant with speech recognition, text-to-speech, and automation modules. Processes natural language to execute system commands and queries.</p>
+          <div class="pc-stack">
+            <span>Python</span><span>Speech Recognition</span><span>NLP</span><span>TTS</span>
+          </div>
+          <div class="pc-footer">
+            <button class="pc-detail-btn" data-modal="ai-assistant">View Details →</button>
+          </div>
+        </article>
+
+        <article class="proj-card reveal" data-pcat="systems" data-modal="nexora-os">
+          <div class="pc-top">
+            <div class="pc-badges">
+              <span class="pc-badge pc-badge-systems">Systems</span>
+            </div>
+            <a href="https://github.com/GOKUL5731/nexora-os" target="_blank" rel="noopener noreferrer" class="pc-gh-link" aria-label="GitHub" data-cursor="OPEN GITHUB">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <h3 class="pc-title">Nexora OS</h3>
+          <p class="pc-desc">Python-based OS-level project exploring system programming concepts, implementing core OS components and demonstrating low-level software development skills.</p>
+          <div class="pc-stack">
+            <span>Python</span><span>Systems</span><span>OS Concepts</span>
+          </div>
+          <div class="pc-footer">
+            <button class="pc-detail-btn" data-modal="nexora-os">View Details →</button>
+          </div>
+        </article>
+
+        <article class="proj-card reveal" data-pcat="fullstack" data-modal="college-mgmt">
+          <div class="pc-top">
+            <div class="pc-badges">
+              <span class="pc-badge pc-badge-fs">Full Stack</span>
+              <span class="pc-badge pc-badge-intern">Internship</span>
+            </div>
+            <a href="https://github.com/GOKUL5731" target="_blank" rel="noopener noreferrer" class="pc-gh-link" aria-label="GitHub" data-cursor="OPEN GITHUB">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <h3 class="pc-title">College Management System</h3>
+          <p class="pc-desc">Role-based web platform with attendance, marks, and course management. Built as internship capstone with MySQL backend, PHP logic, and Bootstrap UI.</p>
+          <div class="pc-stack">
+            <span>PHP</span><span>MySQL</span><span>JavaScript</span><span>Bootstrap</span>
+          </div>
+          <div class="pc-footer">
+            <button class="pc-detail-btn" data-modal="college-mgmt">View Details →</button>
+          </div>
+        </article>
+
+        <article class="proj-card reveal" data-pcat="systems" data-modal="click2fix">
+          <div class="pc-top">
+            <div class="pc-badges">
+              <span class="pc-badge pc-badge-mobile">Mobile</span>
+            </div>
+            <a href="https://github.com/GOKUL5731/Click2Fix" target="_blank" rel="noopener noreferrer" class="pc-gh-link" aria-label="GitHub" data-cursor="OPEN GITHUB">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <h3 class="pc-title">Click2Fix</h3>
+          <p class="pc-desc">Cross-platform mobile application built with Flutter/Dart. Demonstrates mobile UI development skills and cross-platform software architecture principles.</p>
+          <div class="pc-stack">
+            <span>Dart</span><span>Flutter</span><span>Mobile</span>
+          </div>
+          <div class="pc-footer">
+            <button class="pc-detail-btn" data-modal="click2fix">View Details →</button>
+          </div>
+        </article>
+
+        <article class="proj-card reveal" data-pcat="ai" data-modal="ml-playground">
+          <div class="pc-top">
+            <div class="pc-badges">
+              <span class="pc-badge pc-badge-ai">AI / ML</span>
+            </div>
+            <a href="https://github.com/GOKUL5731/ML-Playground" target="_blank" rel="noopener noreferrer" class="pc-gh-link" aria-label="GitHub" data-cursor="OPEN GITHUB">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <h3 class="pc-title">ML Playground</h3>
+          <p class="pc-desc">Curated collection of ML experiments and Jupyter notebooks exploring diverse algorithms, model architectures, and data analysis workflows using TensorFlow and Python.</p>
+          <div class="pc-stack">
+            <span>Python</span><span>TensorFlow</span><span>Jupyter</span><span>ML</span>
+          </div>
+          <div class="pc-footer">
+            <button class="pc-detail-btn" data-modal="ml-playground">View Details →</button>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="proj-more reveal">
+        <a href="https://github.com/GOKUL5731?tab=repositories" target="_blank" rel="noopener noreferrer" class="proj-more-btn" data-cursor="OPEN GITHUB">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          View All Repositories on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ EXPERIENCE / JOURNEY ═══════════════ -->
+  <section id="experience" class="section section-dark" aria-label="Experience and Certifications">
+    <div class="section-inner">
+      <div class="section-label-row reveal">
+        <span class="section-num">04</span>
+        <span class="section-slash">/</span>
+        <span class="section-tag">Journey</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="exp-header reveal">
+        <h2 class="exp-h2">Experience & Certifications</h2>
+      </div>
+      <div class="exp-layout">
+        <div class="timeline" aria-label="Career timeline">
+          <div class="tl-item reveal" data-year="2026">
+            <div class="tl-year">2026</div>
+            <div class="tl-marker tl-marker-accent"></div>
+            <div class="tl-body">
+              <div class="tl-meta">
+                <span class="tl-badge tl-badge-intern">Internship</span>
+                <span class="tl-period">Jun – Jul 2026</span>
+              </div>
+              <h3 class="tl-title">Full Stack Web Development Intern</h3>
+              <p class="tl-org">8Queens Software Technologies Pvt. Ltd., Chennai</p>
+              <ul class="tl-points">
+                <li>Completed a full stack web development internship (19/06/2026 – 20/07/2026)</li>
+                <li>Built and deployed production-ready full stack web applications</li>
+              </ul>
+              <div class="tl-stack">
+                <span>Full-Stack</span><span>Web Apps</span><span>Software Engineering</span>
+              </div>
+            </div>
+          </div>
+          <div class="tl-item reveal">
+            <div class="tl-year"></div>
+            <div class="tl-marker tl-marker-award"></div>
+            <div class="tl-body">
+              <div class="tl-meta">
+                <span class="tl-badge tl-badge-award">Hackathon</span>
+                <span class="tl-period">Apr 2026</span>
+              </div>
+              <h3 class="tl-title">Certificate of Appreciation — HackSprint'26</h3>
+              <p class="tl-org">K. Ramakrishnan College of Technology — National Hackathon</p>
+              <p class="tl-desc">Recognized under the <em>Industry Innovation & Infrastructure</em> theme at a national-level hackathon.</p>
+            </div>
+          </div>
+          <div class="tl-item reveal">
+            <div class="tl-year"></div>
+            <div class="tl-marker"></div>
+            <div class="tl-body">
+              <div class="tl-meta">
+                <span class="tl-badge tl-badge-cert">Certification</span>
+                <span class="tl-period">Mar 2026</span>
+              </div>
+              <h3 class="tl-title">Design Spark Challenge (2nd Edition)</h3>
+              <p class="tl-org">Academia NxT / Intellect Design Arena</p>
+              <p class="tl-desc">Earned participation and accomplishment (Ascent Award) recognition for design thinking and innovative systems prototyping.</p>
+            </div>
+          </div>
+          <div class="tl-item reveal" data-year="2025">
+            <div class="tl-year">2025</div>
+            <div class="tl-marker tl-marker-accent"></div>
+            <div class="tl-body">
+              <div class="tl-meta">
+                <span class="tl-badge tl-badge-intern">Internship</span>
+                <span class="tl-period">Jun – Jul 2025</span>
+              </div>
+              <h3 class="tl-title">Web Development Intern</h3>
+              <p class="tl-org">CodeBind Technologies, Trichy</p>
+              <ul class="tl-points">
+                <li>Completed hands-on training in HTML, CSS, JavaScript, PHP, and MySQL</li>
+                <li>Built and deployed responsive web applications across multiple projects</li>
+                <li>Delivered <strong>College Management System</strong> as internship capstone</li>
+                <li>Completed a one-day AI workshop and corporate aptitude training</li>
+              </ul>
+              <div class="tl-stack">
+                <span>PHP</span><span>MySQL</span><span>JavaScript</span><span>Bootstrap</span>
+              </div>
+            </div>
+          </div>
+          <div class="tl-item reveal">
+            <div class="tl-year"></div>
+            <div class="tl-marker"></div>
+            <div class="tl-body">
+              <div class="tl-meta">
+                <span class="tl-badge tl-badge-cert">Certification</span>
+                <span class="tl-period">Mar 2025</span>
+              </div>
+              <h3 class="tl-title">Robotics & IoT — Value Added Course (30 hrs)</h3>
+              <p class="tl-org">TANCAM (Dassault Systèmes / TIDCO), Periyar Maniammai Institute</p>
+              <p class="tl-desc">30-hour intensive covering robotics fundamentals, IoT system design, and implementation using industry-standard tools.</p>
+            </div>
+          </div>
+          <div class="tl-item reveal" data-year="2024">
+            <div class="tl-year">2024</div>
+            <div class="tl-marker"></div>
+            <div class="tl-body">
+              <div class="tl-meta">
+                <span class="tl-badge tl-badge-cert">Certification</span>
+                <span class="tl-period">Jun – Jul 2024</span>
+              </div>
+              <h3 class="tl-title">Industrial Automation</h3>
+              <p class="tl-org">Rexroth Bosch Group / CETAT, Periyar Maniammai Institute</p>
+              <p class="tl-desc">Certified training in industrial automation, programmable controllers, and manufacturing process automation.</p>
+            </div>
+          </div>
+        </div>
+        <div class="achievements-panel">
+          <h3 class="ach-heading reveal">Achievements</h3>
+          <div class="ach-list">
+            <div class="ach-card reveal">
+              <div class="ach-icon">🏆</div>
+              <div class="ach-body">
+                <h4>Best Student Award</h4>
+                <p>Design Spark Challenge — 38th Annual Day, Periyar Maniammai Institute (2025–2026)</p>
+              </div>
+            </div>
+            <div class="ach-card reveal">
+              <div class="ach-icon">⭐</div>
+              <div class="ach-body">
+                <h4>Design Sparks Ascent Award</h4>
+                <p>2nd Edition Design Spark Challenge — Academia NxT / Intellect Design Arena (2026)</p>
+              </div>
+            </div>
+            <div class="ach-card reveal">
+              <div class="ach-icon">🎖️</div>
+              <div class="ach-body">
+                <h4>HackSprint'26 Recognition</h4>
+                <p>Certificate of Appreciation — Industry Innovation & Infrastructure, National Hackathon (Apr 2026)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ CONTACT ═══════════════ -->
+  <section id="contact" class="section contact-section" aria-label="Contact">
+    <canvas id="contact-canvas" aria-hidden="true"></canvas>
+    <div class="contact-amb" aria-hidden="true">
+      <div class="camb-blob camb-1"></div>
+      <div class="camb-blob camb-2"></div>
+    </div>
+    <div class="section-inner contact-inner">
+      <div class="section-label-row reveal">
+        <span class="section-num">05</span>
+        <span class="section-slash">/</span>
+        <span class="section-tag">Connect</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="contact-hero reveal">
+        <h2 class="contact-h2">Ready to Build?</h2>
+        <p class="contact-sub">Open to software engineering internships, AI/ML opportunities, and collaborative projects. Let's create something intelligent.</p>
+      </div>
+      <div class="contact-channels reveal">
+        <a href="mailto:gokulgokul5731@gmail.com" class="cc-item" id="contact-email" data-cursor="SEND EMAIL">
+          <div class="cc-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="cc-body">
+            <span class="cc-label">Email</span>
+            <span class="cc-val">gokulgokul5731@gmail.com</span>
+          </div>
+          <span class="cc-arrow">→</span>
+        </a>
+        <a href="https://github.com/GOKUL5731" target="_blank" rel="noopener noreferrer" class="cc-item" id="contact-github" data-cursor="OPEN GITHUB">
+          <div class="cc-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </div>
+          <div class="cc-body">
+            <span class="cc-label">GitHub</span>
+            <span class="cc-val">github.com/GOKUL5731</span>
+          </div>
+          <span class="cc-arrow">→</span>
+        </a>
+        <a href="https://linkedin.com/in/gokul-m-cse" target="_blank" rel="noopener noreferrer" class="cc-item" id="contact-linkedin" data-cursor="VIEW LINKEDIN">
+          <div class="cc-icon cc-icon-li">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+          <div class="cc-body">
+            <span class="cc-label">LinkedIn</span>
+            <span class="cc-val">linkedin.com/in/gokul-m-cse</span>
+          </div>
+          <span class="cc-arrow">→</span>
+        </a>
+        <a href="tel:+919487914589" class="cc-item" id="contact-phone" data-cursor="CALL">
+          <div class="cc-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.17 2 2 0 012 .01h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.15 6.15l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="cc-body">
+            <span class="cc-label">Phone</span>
+            <span class="cc-val">+91 9487914589</span>
+          </div>
+          <span class="cc-arrow">→</span>
+        </a>
+      </div>
+      <div class="resume-finale reveal">
+        <p>Want the full picture?</p>
+        <a href="assets/resume.pdf" download class="resume-dl-btn magnetic" id="contact-resume-btn" data-cursor="DOWNLOAD">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download Resume
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-id">
+        <a href="#home" class="footer-logo" aria-label="Home">&lt;Gokul/&gt;</a>
+        <p>AI & ML Engineer · Software Developer · Tiruchirappalli, India</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/GOKUL5731" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/gokul-m-cse" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="mailto:gokulgokul5731@gmail.com" aria-label="Email">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <p class="footer-copy">© 2026 M. Gokul. Designed & built with precision.</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
