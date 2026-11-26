@@ -4,7 +4,11 @@
 
 A deployable, serverless e-commerce **starter application** inspired by the Lambda → API Gateway → SQS → DynamoDB process in `nealdct/serverless-for-beginners`. It is an original implementation, not a modified copy of the tutorial repository. No EC2, RDS, running servers, containers, or paid app host required. **Lambda is the only application compute**; other managed AWS services are necessary for storage, routing, authentication, notifications, and the web UI.
 
-> **Deployment status:** source files supplied, NOT deployed to your AWS account. AWS credentials, your SES verification, SNS subscription, payment processor onboarding and webhook signing secret are required for full end-to-end functionality. This is a serious functional learning/staging starter, **not a production-ready retail platform** (see Limitations).
+## Live website
+
+[Open the deployed NOVA MARKET serverless website](https://8bfuo7v9b9.execute-api.us-west-2.amazonaws.com/)
+
+> **Deployment status:** live in AWS `us-west-2`. SES verification, SNS subscription, payment processor onboarding, and a webhook signing secret are required for full end-to-end functionality. This is a serious functional learning/staging starter, **not a production-ready retail platform** (see Limitations).
 
 ## Architecture
 
