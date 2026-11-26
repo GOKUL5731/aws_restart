@@ -1,0 +1,261 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Nova Market HTTPS storefront via API Gateway and Lambda, with DynamoDB, Cognito, Stripe, and notifications
+Parameters:
+  SenderEmail:
+    Type: String
+    Description: Address that will be verified for outgoing order and ticket emails
+  AdminEmail:
+    Type: String
+    Description: Address subscribed to SNS admin notices (must confirm subscription)
+  Currency:
+    Type: String
+    Default: inr
+    AllowedValues: [inr, usd]
+  StripeMode:
+    Type: String
+    Default: test
+    AllowedValues: [test, live]
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures: [arm64]
+    MemorySize: 256
+    Timeout: 15
+    Environment:
+      Variables:
+        DATA_TABLE: !Ref StoreTable
+        CURRENCY: !Ref Currency
+        EMAIL_FROM: !Ref SenderEmail
+        NOTIFY_TOPIC_ARN: !Ref AdminTopic
+Resources:
+  StoreTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+        - AttributeName: GSI1PK
+          AttributeType: S
+        - AttributeName: GSI1SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: ByOwner
+          KeySchema:
+            - AttributeName: GSI1PK
+              KeyType: HASH
+            - AttributeName: GSI1SK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub '${AWS::StackName}-users'
+      UsernameAttributes: [email]
+      AutoVerifiedAttributes: [email]
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 10
+          RequireLowercase: true
+          RequireUppercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      PreventUserExistenceErrors: ENABLED
+      AccessTokenValidity: 1
+      IdTokenValidity: 1
+      RefreshTokenValidity: 7
+  AdminGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      UserPoolId: !Ref UserPool
+      GroupName: admin
+      Description: Operators who can manage products orders and support
+  ShopApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: '$default'
+      CorsConfiguration:
+        AllowOrigins: ['*']
+        AllowHeaders: [authorization, content-type]
+        AllowMethods: [GET, POST, PUT, PATCH, DELETE, OPTIONS]
+        MaxAge: 600
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 50
+        ThrottlingRateLimit: 25
+      Auth:
+        DefaultAuthorizer: CognitoJwt
+        Authorizers:
+          CognitoJwt:
+            IdentitySource: '$request.header.Authorization'
+            JwtConfiguration:
+              issuer: !Sub 'https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}'
+              audience: [!Ref UserPoolClient]
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/
+      Handler: api.lambda_handler
+      Environment:
+        Variables:
+          USER_POOL_ID: !Ref UserPool
+          STRIPE_KEY_PARAMETER: !Sub '/${AWS::StackName}/stripe-secret'
+          STRIPE_WEBHOOK_PARAMETER: !Sub '/${AWS::StackName}/stripe-webhook'
+          STRIPE_MODE: !Ref StripeMode
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref StoreTable
+        - Statement:
+            - Effect: Allow
+              Action: [dynamodb:Query]
+              Resource: !Sub '${StoreTable.Arn}/index/ByOwner'
+            - Effect: Allow
+              Action: [ssm:GetParameter]
+              Resource: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}/stripe-*'
+            - Effect: Allow
+              Action: [cognito-idp:AdminGetUser]
+              Resource: !GetAtt UserPool.Arn
+            - Effect: Allow
+              Action: [events:PutEvents]
+              Resource: !Sub 'arn:${AWS::Partition}:events:${AWS::Region}:${AWS::AccountId}:event-bus/default'
+      Events:
+        ListProducts: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /products, Method: GET, Auth: {Authorizer: NONE}}}
+        GetProduct: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: '/products/{id}', Method: GET, Auth: {Authorizer: NONE}}}
+        CreateCheckout: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /checkout, Method: POST}}
+        CreateCodOrder: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /orders/cod, Method: POST}}
+        CollectCodPayment: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: '/admin/orders/{id}/collect', Method: PATCH}}
+        Webhook: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /webhook/stripe, Method: POST, Auth: {Authorizer: NONE}}}
+        ListOrders: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /orders, Method: GET}}
+        ListTickets: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /tickets, Method: GET}}
+        CreateTicket: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /tickets, Method: POST}}
+        ReplyTicket: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: '/tickets/{id}/reply', Method: POST}}
+        ListAdminOrders: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /admin/orders, Method: GET}}
+        ChangeOrder: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: '/admin/orders/{id}', Method: PATCH}}
+        ListAdminTickets: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /admin/tickets, Method: GET}}
+        AddProduct: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /admin/products, Method: POST}}
+        UpdateProduct: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: '/admin/products/{id}', Method: PUT}}
+        DeleteProduct: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: '/admin/products/{id}', Method: DELETE}}
+        ChangeTicket: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: '/admin/tickets/{id}', Method: PATCH}}
+  NotificationDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 1209600
+  NotificationQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 120
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt NotificationDLQ.Arn
+        maxReceiveCount: 5
+  NotificationRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source: [serverless.commerce]
+        detail-type: [OrderPlaced, OrderPaid, OrderShipped, CodPaymentCollected, TicketCreated, TicketReply]
+      Targets:
+        - Id: NotificationQueueTarget
+          Arn: !GetAtt NotificationQueue.Arn
+  QueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref NotificationQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: {Service: events.amazonaws.com}
+            Action: sqs:SendMessage
+            Resource: !GetAtt NotificationQueue.Arn
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !GetAtt NotificationRule.Arn
+  EmailWorker:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/
+      Handler: worker.lambda_handler
+      Timeout: 30
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: [ses:SendEmail]
+              Resource: '*'
+            - Effect: Allow
+              Action: [sns:Publish]
+              Resource: !Ref AdminTopic
+      Events:
+        Queue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt NotificationQueue.Arn
+            BatchSize: 5
+            FunctionResponseTypes: [ReportBatchItemFailures]
+  AdminTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Serverless Commerce Alerts
+  AdminTopicEmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref AdminTopic
+      Protocol: email
+      Endpoint: !Ref AdminEmail
+  SesSenderIdentity:
+    Type: AWS::SES::EmailIdentity
+    Properties:
+      EmailIdentity: !Ref SenderEmail
+  # HTTPS frontend served by API Gateway + Lambda. No CloudFront verification required.
+  SiteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: frontend/
+      Handler: storefront_handler.lambda_handler
+      Runtime: python3.12
+      MemorySize: 128
+      Timeout: 10
+      Environment:
+        Variables:
+          USER_POOL_ID: !Ref UserPool
+          USER_POOL_CLIENT_ID: !Ref UserPoolClient
+          STORE_REGION: !Ref AWS::Region
+      Events:
+        Index: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /, Method: GET, Auth: {Authorizer: NONE}}}
+        Html: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /index.html, Method: GET, Auth: {Authorizer: NONE}}}
+        CSS: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /styles.css, Method: GET, Auth: {Authorizer: NONE}}}
+        JS: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /app.js, Method: GET, Auth: {Authorizer: NONE}}}
+        Config: {Type: HttpApi, Properties: {ApiId: !Ref ShopApi, Path: /config.js, Method: GET, Auth: {Authorizer: NONE}}}
+
+Outputs:
+  Website:
+    Value: !Sub 'https://${ShopApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+  ApiUrl:
+    Value: !Sub 'https://${ShopApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+  UserPoolId:
+    Value: !Ref UserPool
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
+  DynamoTable:
+    Value: !Ref StoreTable
+  WebhookUrl:
+    Value: !Sub 'https://${ShopApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/webhook/stripe'
+  AdminTopicArn:
+    Value: !Ref AdminTopic

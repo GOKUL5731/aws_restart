@@ -1,0 +1,37 @@
+.aws-sam/
+samconfig.toml
+frontend/config.js
+scripts/seed.json
+__pycache__/
+*.pyc
+.env
+.env.*
+.DS_Store
+
+# Local credentials and environment
+!.env.example
+!.env.sample
+.aws/
+credentials
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+# Generated files and editor settings
+.venv/
+venv/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+node_modules/
+dist/
+build/
+coverage/
+*.log
+Thumbs.db
+.vscode/
+.idea/

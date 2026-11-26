@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101b29" />
+  <meta name="description" content="NOVA MARKET — everyday essentials, thoughtfully chosen." />
+  <title>NOVA MARKET | Discover better essentials</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="announcement">✦ Designed for everyday discoveries <span> • </span> Secure checkout powered by Stripe</div>
+  <header class="header">
+    <a class="brand" href="#home" aria-label="Nova Market home"><span class="brand-mark">✳</span> NOVA <span class="brand-muted">MARKET</span></a>
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="#home" data-nav="home">Shop</a><a href="#orders" data-nav="orders">My orders</a><a href="#support" data-nav="support">Support</a><a href="#admin" data-nav="admin" id="admin-link" hidden>Admin</a></nav>
+    <div class="top-actions"><span class="user-label" id="user-label"></span><button class="ghost-button" data-action="account" id="account-button">Sign in</button><button class="cart-button" data-action="cart">Bag <span id="cart-count">0</span></button></div>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <footer class="footer"><div><strong>✳ NOVA MARKET</strong><p>Goods for a thoughtful everyday.</p></div><div><span>Customer care</span><a href="#support">Support center</a><a href="#orders">Track your orders</a></div><div><span>Our promise</span><p>Protected checkout. Friendly support.<br />A simple way to shop.</p></div><small>© 2026 Nova Market · Demo storefront</small></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="overlay-root"></div>
+</body>
+</html>

@@ -1,0 +1,292 @@
+{
+  "__TABLE_NAME__": [
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "PRODUCT"
+          },
+          "SK": {
+            "S": "ceramic-mug"
+          },
+          "name": {
+            "S": "Ceramic Coffee Mug"
+          },
+          "category": {
+            "S": "Home"
+          },
+          "description": {
+            "S": "Hand-finished stoneware mug for slow mornings."
+          },
+          "price": {
+            "N": "59900"
+          },
+          "active": {
+            "BOOL": true
+          },
+          "icon": {
+            "S": "\u2615"
+          },
+          "updatedAt": {
+            "S": "2026-10-08T08:49:18.656967+00:00"
+          },
+          "imageUrl": {
+            "S": "https://images.unsplash.com/photo-1454329001438-1752daa90420?auto=format&fit=crop&w=840&h=700&q=80"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "PRODUCT"
+          },
+          "SK": {
+            "S": "plant-pot"
+          },
+          "name": {
+            "S": "Mini Plant Pot"
+          },
+          "category": {
+            "S": "Home"
+          },
+          "description": {
+            "S": "A minimalist planter that brightens any shelf."
+          },
+          "price": {
+            "N": "44900"
+          },
+          "active": {
+            "BOOL": true
+          },
+          "icon": {
+            "S": "\ud83e\udeb4"
+          },
+          "updatedAt": {
+            "S": "2026-10-08T08:49:18.656987+00:00"
+          },
+          "imageUrl": {
+            "S": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=840&h=700&q=80"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "PRODUCT"
+          },
+          "SK": {
+            "S": "tote-bag"
+          },
+          "name": {
+            "S": "Everyday Tote Bag"
+          },
+          "category": {
+            "S": "Lifestyle"
+          },
+          "description": {
+            "S": "Roomy, durable and made for the everyday carry."
+          },
+          "price": {
+            "N": "79900"
+          },
+          "active": {
+            "BOOL": true
+          },
+          "icon": {
+            "S": "\ud83d\udc5c"
+          },
+          "updatedAt": {
+            "S": "2026-10-08T08:49:18.656992+00:00"
+          },
+          "imageUrl": {
+            "S": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=840&h=700&q=80"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "PRODUCT"
+          },
+          "SK": {
+            "S": "notebook"
+          },
+          "name": {
+            "S": "Premium Notebook"
+          },
+          "category": {
+            "S": "Stationery"
+          },
+          "description": {
+            "S": "Smooth pages with a clean, timeless finish."
+          },
+          "price": {
+            "N": "29900"
+          },
+          "active": {
+            "BOOL": true
+          },
+          "icon": {
+            "S": "\ud83d\udcd3"
+          },
+          "updatedAt": {
+            "S": "2026-10-08T08:49:18.656996+00:00"
+          },
+          "imageUrl": {
+            "S": "https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=840&h=700&q=80"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "PRODUCT"
+          },
+          "SK": {
+            "S": "wireless-headphones"
+          },
+          "name": {
+            "S": "Wireless Headphones"
+          },
+          "category": {
+            "S": "Tech"
+          },
+          "description": {
+            "S": "Comfort-first sound for working and listening."
+          },
+          "price": {
+            "N": "249900"
+          },
+          "active": {
+            "BOOL": true
+          },
+          "icon": {
+            "S": "\ud83c\udfa7"
+          },
+          "updatedAt": {
+            "S": "2026-10-08T08:49:18.656999+00:00"
+          },
+          "imageUrl": {
+            "S": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=840&h=700&q=80"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "PRODUCT"
+          },
+          "SK": {
+            "S": "desk-light"
+          },
+          "name": {
+            "S": "Modern Desk Light"
+          },
+          "category": {
+            "S": "Tech"
+          },
+          "description": {
+            "S": "Soft warm light for productive evenings."
+          },
+          "price": {
+            "N": "189900"
+          },
+          "active": {
+            "BOOL": true
+          },
+          "icon": {
+            "S": "\ud83d\udca1"
+          },
+          "updatedAt": {
+            "S": "2026-10-08T08:49:18.657003+00:00"
+          },
+          "imageUrl": {
+            "S": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=840&h=700&q=80"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "PRODUCT"
+          },
+          "SK": {
+            "S": "steel-bottle"
+          },
+          "name": {
+            "S": "Steel Water Bottle"
+          },
+          "category": {
+            "S": "Lifestyle"
+          },
+          "description": {
+            "S": "Reusable insulated bottle for drinks on the move."
+          },
+          "price": {
+            "N": "99900"
+          },
+          "active": {
+            "BOOL": true
+          },
+          "icon": {
+            "S": "\ud83e\uddf4"
+          },
+          "updatedAt": {
+            "S": "2026-10-08T08:49:18.657005+00:00"
+          },
+          "imageUrl": {
+            "S": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=840&h=700&q=80"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "PRODUCT"
+          },
+          "SK": {
+            "S": "desk-clock"
+          },
+          "name": {
+            "S": "Minimal Desk Clock"
+          },
+          "category": {
+            "S": "Home"
+          },
+          "description": {
+            "S": "Simple design to bring a little calm to your space."
+          },
+          "price": {
+            "N": "129900"
+          },
+          "active": {
+            "BOOL": true
+          },
+          "icon": {
+            "S": "\u23f0"
+          },
+          "updatedAt": {
+            "S": "2026-10-08T08:49:18.657008+00:00"
+          },
+          "imageUrl": {
+            "S": "https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&w=840&h=700&q=80"
+          }
+        }
+      }
+    }
+  ]
+}
